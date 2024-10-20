@@ -236,10 +236,17 @@ def get_message_url(event: dict[str, Any]) -> str:
     bot_user = get_user_profile_by_id(event["user_profile_id"])
     message = event["message"]
     realm = bot_user.realm
+    
+    stream_id, topic_name = None, None
+    if message["type"] == "stream":
+        stream_id, topic_name = message["stream_id"], get_topic_from_message_info(message)
 
     return near_message_url(
         realm=realm,
-        message=message,
+        message_id=message["id"],
+        display_recipient=message["display_recipient"],
+        stream_id=stream_id,
+        topic_name=topic_name,
     )
 
 
