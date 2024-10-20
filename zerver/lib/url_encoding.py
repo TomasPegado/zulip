@@ -78,7 +78,7 @@ def near_stream_message_url(
     stream_id: Optional[int] = None,
     topic_name: Optional[str] = None,
 ) -> str:
-    message_id_ = str(message_id)
+    
     stream_id_ = int(str(stream_id))
     stream_name = str(display_recipient)
     encoded_topic_name = hash_util_encode(str(topic_name))
@@ -92,7 +92,7 @@ def near_stream_message_url(
         "topic",
         encoded_topic_name,
         "near",
-        message_id_,
+        str(message_id),
     ]
     full_url = "/".join(parts)
     return full_url
@@ -101,7 +101,7 @@ def near_stream_message_url(
 def near_pm_message_url(
     realm: Realm, message_id: int, display_recipient: List[UserDisplayRecipient]
 ) -> str:
-    message_id_string = str(message_id)
+    
     user_id_strings = [str(recipient["id"]) for recipient in display_recipient]
 
     # Use the "perma-link" format here that includes the sender's
@@ -114,7 +114,7 @@ def near_pm_message_url(
         "dm",
         pm_str,
         "near",
-        message_id_string,
+        str(message_id),
     ]
     full_url = "/".join(parts)
     return full_url
