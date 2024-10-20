@@ -1,10 +1,8 @@
-from typing import List, Optional
 from urllib.parse import quote, urlsplit
 
 import re2
 
-from zerver.lib.topic import get_topic_from_message_info
-from zerver.lib.types import UserDisplayRecipient, DisplayRecipientT
+from zerver.lib.types import DisplayRecipientT, UserDisplayRecipient
 from zerver.models import Realm, Stream, UserProfile
 
 
@@ -48,17 +46,18 @@ def topic_narrow_url(*, realm: Realm, stream: Stream, topic_name: str) -> str:
     return f"{base_url}{encode_stream(stream.id, stream.name)}/topic/{hash_util_encode(topic_name)}"
 
 
-def near_message_url(realm: Realm,
+def near_message_url(
+    realm: Realm,
     message_id: int,
     display_recipient: DisplayRecipientT,
-    stream_id: Optional[int] = None,
-    topic_name: Optional[str] = None,
+    stream_id: int | None = None,
+    topic_name: str | None = None,
 ) -> str:
     if stream_id:
         assert isinstance(display_recipient, str)
         url = near_stream_message_url(
             realm=realm,
-             message_id=message_id,
+            message_id=message_id,
             display_recipient=display_recipient,
             stream_id=stream_id,
             topic_name=topic_name,
@@ -75,10 +74,9 @@ def near_stream_message_url(
     realm: Realm,
     message_id: int,
     display_recipient: DisplayRecipientT,
-    stream_id: Optional[int] = None,
-    topic_name: Optional[str] = None,
+    stream_id: int | None = None,
+    topic_name: str | None = None,
 ) -> str:
-    
     stream_id_ = int(str(stream_id))
     stream_name = str(display_recipient)
     encoded_topic_name = hash_util_encode(str(topic_name))
@@ -99,9 +97,8 @@ def near_stream_message_url(
 
 
 def near_pm_message_url(
-    realm: Realm, message_id: int, display_recipient: List[UserDisplayRecipient]
+    realm: Realm, message_id: int, display_recipient: list[UserDisplayRecipient]
 ) -> str:
-    
     user_id_strings = [str(recipient["id"]) for recipient in display_recipient]
 
     # Use the "perma-link" format here that includes the sender's

@@ -598,7 +598,7 @@ class TestOutgoingWebhookMessaging(ZulipTestCase):
         )
 
         last_message = self.get_last_message()
-        
+
         message_url = near_message_url(
             realm, sent_message_id, "Denmark", get_stream("Denmark", realm).id, "bar"
         )
